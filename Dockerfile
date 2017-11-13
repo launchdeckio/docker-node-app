@@ -9,6 +9,9 @@ RUN apk update && apk upgrade
 # Install bash, git and openSSH
 RUN apk add --no-cache bash git openssh
 
+# Install alpine-SDK (for node-gyp)
+RUN apk add --no-cache alpine-sdk
+
 # Install python 2 (for node-gyp)
 RUN apk add --no-cache python && \
     python -m ensurepip && \
