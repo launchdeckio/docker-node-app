@@ -9,6 +9,13 @@ RUN apk update && apk upgrade
 # Install bash, git and openSSH
 RUN apk add --no-cache bash git openssh
 
+# Install python 2 (for node-gyp)
+RUN apk add --no-cache python && \
+    python -m ensurepip && \
+    rm -r /usr/lib/python*/ensurepip && \
+    pip install --upgrade pip setuptools && \
+    rm -r /root/.cache
+
 # Create app directory
 RUN mkdir -p /app
 WORKDIR /app
