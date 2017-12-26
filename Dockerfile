@@ -1,30 +1,18 @@
-FROM node:9-alpine
+FROM node:alpine
 
 # to make npm test and other automated routines run non-interactively
 ENV CI=true
 
-# Update package registry
-RUN apk update && apk upgrade
-
-# Install bash, git and openSSH
-RUN apk add --no-cache bash git openssh
-
-# Install alpine-SDK (for node-gyp)
-RUN apk add --no-cache alpine-sdk
-
-# Install python 2 (for node-gyp)
-RUN apk add --no-cache python && \
-    python -m ensurepip && \
-    rm -r /usr/lib/python*/ensurepip && \
-    pip install --upgrade pip setuptools && \
-    rm -r /root/.cache
+# Install gyp dependencies
+RUN apk add --no-cache --virtual .gyp \
+        python \
+        make \
+        g++ \
+    && python -m ensurepip \
+    && rm -r /usr/lib/python*/ensurepip \
+    && pip install --upgrade pip setuptools \
+    && rm -r /root/.cache
 
 # Create app directory
 RUN mkdir -p /app
 WORKDIR /app
-
-# Add known hosts
-RUN mkdir -p /root/.ssh && touch /root/.ssh/known_hosts && \
-    ssh-keyscan -H github.com >> /root/.ssh/known_hosts && \
-    ssh-keyscan -H bitbucket.org >> /root/.ssh/known_hosts && \
-    cat /root/.ssh/known_hosts
