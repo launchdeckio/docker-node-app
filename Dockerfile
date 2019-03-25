@@ -14,6 +14,8 @@ RUN apk add --no-cache openssh \
 # Install gyp dependencies
 RUN apk add --no-cache python make g++
 
+RUN npm i -g yarn
+
 # Create app directory
 RUN mkdir -p /app
 WORKDIR /app
