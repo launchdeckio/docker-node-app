@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:lts-alpine
 
 # to make npm test and other automated routines run non-interactively
 ENV CI=true
